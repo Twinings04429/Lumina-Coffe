@@ -1,6 +1,6 @@
 // src/pages/Cart.jsx
 import React from "react";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../components/CartContext";
 
 function Cart() {
     const { cart, removeFromCart } = useCart();

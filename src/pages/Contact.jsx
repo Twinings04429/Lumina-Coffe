@@ -1,48 +1,79 @@
-import React from "react";
-import { Mail, Phone, MapPin } from "lucide-react"; // Ikon dari Lucide React
+import React, { useRef } from "react";
+import { sendEmail } from "../../utils/EmailService";// Pastikan path-nya sesuai struktur project-mu
 
 function Contact() {
+    const form = useRef();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const formData = {
+            from_name: form.current.from_name.value,
+            email: form.current.email.value,
+            phone: form.current.phone.value,
+            message: form.current.message.value
+        };
+
+        sendEmail(formData)
+            .then(() => {
+                alert("Pesan berhasil dikirim! ✨");
+                form.current.reset();
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("Gagal mengirim pesan 😢 Coba lagi ya, Futaro-kun.");
+            });
+    };
+
     return (
-        <div className="min-h-screen bg-[#2D1E15] text-black flex items-center justify-center p-8">
-            <div className="bg-[#D1D1D1] w-full max-w-4xl p-8 rounded-3xl shadow-lg flex flex-col md:flex-row">
-
-                {/* Bagian Informasi Kontak */}
-                <div className="flex-1 space-y-6 text-lg">
-                    <h1 className="text-3xl font-bold text-center text-black">Contact Us</h1>
-
-                    {/* Email */}
-                    <div className="flex items-center gap-3">
-                        <Mail size={24} />
-                        <a href="mailto:LuminaCoffee2025@gmail.com" className="underline font-medium">
-                            LuminaCoffee2025@gmail.com
-                        </a>
-                    </div>
-
-                    {/* Telepon */}
-                    <div className="flex items-center gap-3">
-                        <Phone size={24} />
-                        <p>+62 - 111 - 222 - 1212</p>
-                    </div>
-
-                    {/* Alamat */}
-                    <div className="flex items-center gap-3">
-                        <MapPin size={24} />
-                        <p>
-                            Jl. Sriwijaya No. 1, Komp. Pelita, <br />
-                            Nagoya, Batam 29444, Kepulauan Riau, Indonesia
-                        </p>
-                    </div>
+        <div className="min-h-screen bg-[#2D1E15] text-white flex items-center justify-center px-4 py-12">
+            <div className="bg-[#D1D1D1] text-black w-full max-w-5xl p-8 rounded-3xl shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Kata-kata sambutan */}
+                <div className="space-y-6 flex flex-col justify-center">
+                    <h1 className="text-3xl font-bold text-center md:text-left">Contact Lumina Coffee</h1>
+                    <p className="text-lg leading-relaxed">
+                        Terima kasih telah mengunjungi Lumina Coffee ☕️<br />
+                        Jika kamu memiliki pertanyaan, saran, atau sekadar ingin menyapa, jangan ragu untuk mengirimkan pesan melalui formulir di samping ini.
+                    </p>
+                    <p className="text-lg leading-relaxed">
+                        Kami sangat senang mendengar dari kamu dan akan berusaha merespons secepat mungkin 💬
+                    </p>
                 </div>
 
                 {/* Formulir Kontak */}
-                <div className="flex-1 mt-6 md:mt-0">
-                    <form className="space-y-4">
-                        <input type="text" placeholder="YOUR NAME" className="w-full p-3 bg-[#3A241D] text-white rounded-md" />
-                        <input type="email" placeholder="EMAIL ADDRESS" className="w-full p-3 bg-[#3A241D] text-white rounded-md" />
-                        <input type="tel" placeholder="TELEPHONE NUMBER" className="w-full p-3 bg-[#3A241D] text-white rounded-md" />
-                        <textarea placeholder="YOUR MESSAGE" className="w-full p-3 bg-[#3A241D] text-white rounded-md h-32"></textarea>
-                        <button className="bg-[#3A241D] text-white px-6 py-2 rounded-md w-full font-bold hover:bg-[#2D1E15] transition">
-                            SEND MESSAGE
+                <div>
+                    <form ref={form} onSubmit={handleSubmit} className="space-y-4">
+                        <input
+                            type="text"
+                            name="from_name"
+                            placeholder="Your Name"
+                            className="w-full p-3 bg-[#3A241D] text-white rounded-md placeholder-gray-300"
+                            required
+                        />
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email Address"
+                            className="w-full p-3 bg-[#3A241D] text-white rounded-md placeholder-gray-300"
+                            required
+                        />
+                        <input
+                            type="tel"
+                            name="phone"
+                            placeholder="Telephone Number"
+                            className="w-full p-3 bg-[#3A241D] text-white rounded-md placeholder-gray-300"
+                        />
+                        <textarea
+                            name="message"
+                            placeholder="Your Message"
+                            className="w-full p-3 bg-[#3A241D] text-white rounded-md h-32 placeholder-gray-300"
+                            required
+                        ></textarea>
+                        <button
+                            type="submit"
+                            className="bg-[#3A241D] text-white px-6 py-2 rounded-md w-full font-bold hover:bg-[#2D1E15] transition"
+                        >
+                            Send Message
                         </button>
                     </form>
                 </div>
